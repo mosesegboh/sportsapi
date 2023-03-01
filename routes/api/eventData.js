@@ -16,11 +16,15 @@ router.get("/", async (req, res) => {
     axios(config)
     .then(function (response) {
         response.data.result.sports.forEach((item) => {
+            // console.log('right track')
             if (item.comp.length > 0) {
                 item.comp.forEach((newItem) => {
+                    // console.log('right track')
                     newItem.events.forEach((event)=>{
+                        // console.log(event.id)
                         if (event.id == +id) {
-                            res.json({
+                            // console.log('i was inside here')
+                            return res.json({
                                 status: "SUCCESS", 
                                 data: event,
                             })
