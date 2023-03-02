@@ -2,9 +2,9 @@ const request = require('supertest')
 const {app} = require('../server') 
 
 describe('sports and events API', () => {
-    it('GET /api/all-sports --> array sports', () => {
+    it('GET /api/all-sports?lang=en --> array sports', () => {
         return request(app)
-        .get('/api/all-sports')
+        .get('/api/all-sports?lang=en')
         .expect('Content-Type', /json/)
         .expect(200)
         .then((response) => {
@@ -14,11 +14,11 @@ describe('sports and events API', () => {
                 })
             )
         })
-    })
+    }) 
 
-    it('GET /api/event?id=601600 --> specific event', () => {
+    it('GET `/api/events/${process.env.TEST_ID}` --> specific event', () => {
         return request(app)
-        .get('/api/event?id=601600')
+        .get(`/api/event/${process.env.TEST_EVENT_ID}`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -37,9 +37,9 @@ describe('sports and events API', () => {
         .expect(404)
     })
 
-    it('GET /api/event-data?id=1889582200 --> specific events', () => {
+    it('GET `/api/event-data/${process.env.TEST_ID}` --> specific event data', () => {
         return request(app)
-        .get('/api/event-data?id=1889582200')
+        .get(`/api/event-data/${process.env.TEST_ID}`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)

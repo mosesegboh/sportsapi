@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router()
 var axios = require('axios');
-const {BaseUrl} = require("../../services")
+const {BaseUrl, addToCache, cache} = require("../../services")
 
-router.get("/", async (req, res) => {
-    const id = req.query.id
+router.get("/:id", cache, async (req, res) => {
+    const {id} = req.params
     var config = {
       method: 'get',
       url: `${BaseUrl}`,
@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
                             resultArray.push(event.desc)
                         }) 
                     })
+                    addToCache(id, JSON.stringify(resultArray))
                     return res.json({
                         status: "SUCCESS",
                         data: resultArray,
@@ -42,4 +43,4 @@ router.get("/", async (req, res) => {
     
 });
 
-module.exports = router; 
+module.exports = router;

@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require("express")
 const router = express.Router()
-var axios = require('axios');
-const {BaseUrl} = require("../../services")
+var axios = require('axios')
+const {BaseUrl, addToCache, cache} = require("../../services")
 
-router.get("/", async (req, res) => {
-    const id = req.query.id
+router.get("/:id",  cache, async (req, res) => {
+    const {id} = req.params
     var config = {
       method: 'get',
       url: `${BaseUrl}`,
@@ -15,21 +15,26 @@ router.get("/", async (req, res) => {
     
     axios(config)
     .then(function (response) {
+        var idFound = false
         response.data.result.sports.forEach((item) => {
-            // console.log('right track')
             if (item.comp.length > 0) {
                 item.comp.forEach((newItem) => {
-                    // console.log('right track')
                     newItem.events.forEach((event)=>{
                         // console.log(event.id)
                         if (event.id == +id) {
-                            // console.log('i was inside here')
+                            idFound = true
+                            // console.log(event.id, 'event id')
+                            addToCache(id, JSON.stringify(event))
                             return res.json({
                                 status: "SUCCESS", 
                                 data: event,
                             })
                         }
                     })
+                    if (idFound !== true) {
+                        console.log(idFound)
+                        throw new Error('ID not found')
+                    }
                 })
             }
         })
@@ -38,9 +43,9 @@ router.get("/", async (req, res) => {
         console.log(error);
         return res.json({
             status: "FAILED",
-            message: "An error Occured",
+            message: error.message,
         })
-    });
-});
+    })
+})
 
 module.exports = router; 

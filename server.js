@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const dotenv = require('dotenv')
+const {cache} = require("./services")
 const sportsRouter = require("./routes/api/sports")
 const eventsRouter = require("./routes/api/events")
 const eventsDataRouter = require("./routes/api/eventData")
@@ -16,12 +17,12 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use("/api/all-sports", sportsRouter)
-app.use("/api/event", eventsRouter)
+app.use("/api/events/", eventsRouter)
 app.use("/api/event-data", eventsDataRouter)
 
 const port = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'test') {
-    const server = app.listen(port, () => `Server started on port ${port}`);
+    const server = app.listen(port, () => console.log( `Server started on port ${port}`));
     module.exports = server;
 }
 
