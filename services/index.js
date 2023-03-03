@@ -30,6 +30,7 @@ const addToCache = ($key, $value) => {
 const cache = async (req, res, next) => {
     var {id} = req.params
     if (req.baseUrl == '/api/all-sports') var id = req.query.lang
+    if (req.baseUrl == '/api/events' && req.params.id == undefined) var id = 'all'
     
     try {
         const  data = await client.get(id)
