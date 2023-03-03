@@ -28,11 +28,12 @@ const addToCache = ($key, $value) => {
 }
 
 const cache = async (req, res, next) => {
-    const {id} = req.params.id ? req.params : { id: 'en'}
-   
+    var {id} = req.params
+    if (req.baseUrl == '/api/all-sports') var id = req.query.lang
+    
     try {
         const  data = await client.get(id)
-        if(data !== null){
+        if (data !== null){
             return res.json({
                 status: "SUCCESS", 
                 data: JSON.parse(data),

@@ -3,8 +3,9 @@ const router = express.Router()
 const {BaseUrl, translateText, addToCache, cache} = require("../../services")
 
 router.get("/", cache, async (req, res) => {
+    var id = req.query.lang ? req.query.lang : 'en'
     suportedLanguages = ['zh-CN', 'de', 'en']
-    if (suportedLanguages.includes(req.query.lang) == false){
+    if (suportedLanguages.includes(id) == false){
         return res.json({
             status: "FAILED",
             msg: "Language Not supported",
@@ -24,12 +25,12 @@ router.get("/", cache, async (req, res) => {
     .then(function (response) {
         var resultArray = []
         for (let i = 0; i < response.data.result.sports.length; i++) {
-            translateText( response.data.result.sports[i].desc, req.query.lang ? req.query.lang : 'en' )
+            setTimeout(() => {console.log('delayed for translation process!')}, 9000)
+            translateText( response.data.result.sports[i].desc, id )
             .then((translatedLang) => {
                 resultArray.push(translatedLang)
-                // console.log(resultArray)
-                if (i == response.data.result.sports.length - 1){
-                    addToCache( id = req.query.lang ? req.query.lang : 'en' , JSON.stringify(resultArray) )
+                if (i == response.data.result.sports.length - 1) {
+                    addToCache(id, JSON.stringify(resultArray) )
                     return res.json({
                         status: "SUCCESS",
                         data: resultArray,
