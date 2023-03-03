@@ -24,7 +24,6 @@ router.get("/", cache, async (req, res) => {
     axios(config)
     .then(function (response) {
         var resultArray = []
-        console.log(response.data.result.sports)
         for (let i = 0; i < response.data.result.sports.length; i++) {
             setTimeout(() => {
             translateText( response.data.result.sports[i].desc, id )
@@ -32,7 +31,6 @@ router.get("/", cache, async (req, res) => {
                     resultArray.push(translatedLang)
                     if (resultArray.length == response.data.result.sports.length) {
                         addToCache(id, JSON.stringify(resultArray) )
-                        console.log('here')
                         return res.json({
                             status: "SUCCESS",
                             data: resultArray,
