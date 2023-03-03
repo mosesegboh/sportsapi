@@ -4,6 +4,7 @@ require('dotenv').config()
 const redis = require('redis')
 const REDIS_PORT = process.env.PORT || 6379
 const client = redis.createClient(REDIS_PORT)
+client.connect()
 
 const {Translate} = require('@google-cloud/translate').v2;
 const CREDENTIALS = JSON.parse(process.env.CREDENTIALS);
@@ -31,14 +32,12 @@ const addToCache = ($key, $value) => {
     .catch((err) => {
         console.log('err happened' + err)
     }) 
-    client.quit();
 }
 
 const cache = async (req, res, next) => {
     const {id} = req.params.id ? req.params : { id: 'en'}
    
     try {
-        client.connect()
         const  data = await client.get(id)
         console.log(data)
         if(data !== null){
@@ -56,7 +55,6 @@ const cache = async (req, res, next) => {
             data: "An error Occured",
         })
     } 
-    client.quit()
 }
 
 module.exports = {BaseUrl, addToCache, cache, translateText}
