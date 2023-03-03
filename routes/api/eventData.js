@@ -23,7 +23,6 @@ router.get("/:id",  cache, async (req, res) => {
                         // console.log(event.id)
                         if (event.id == +id) {
                             idFound = true
-                            // console.log(event.id, 'event id')
                             addToCache(id, JSON.stringify(event))
                             return res.json({
                                 status: "SUCCESS", 

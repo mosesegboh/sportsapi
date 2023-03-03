@@ -24,14 +24,7 @@ const translateText = async (text, targetLanguage) => {
 };
 
 const addToCache = ($key, $value) => {
-    client.connect()
-    .then(() => {
-        console.log('connected to redis')
-        client.setEx($key, process.env.EXPIRY, $value)
-      })
-    .catch((err) => {
-        console.log('err happened' + err)
-    }) 
+    client.setEx($key, process.env.EXPIRY, $value)
 }
 
 const cache = async (req, res, next) => {
@@ -39,7 +32,6 @@ const cache = async (req, res, next) => {
    
     try {
         const  data = await client.get(id)
-        console.log(data)
         if(data !== null){
             return res.json({
                 status: "SUCCESS", 
