@@ -5,7 +5,7 @@ const {BaseUrl, translateText, addToCache, cache} = require("../../services")
 router.get("/", cache, async (req, res) => {
     var id = req.query.lang ? req.query.lang : 'en'
     suportedLanguages = ['zh-CN', 'de', 'en']
-    if (suportedLanguages.includes(id) == false){
+    if (!suportedLanguages.includes(id)){
         return res.json({
             status: "FAILED",
             msg: "Language Not supported",
@@ -26,8 +26,8 @@ router.get("/", cache, async (req, res) => {
         var resultArray = []
         for (let i = 0; i < response.data.result.sports.length; i++) {
             setTimeout(() => {
-            translateText( response.data.result.sports[i].desc, id )
-            .then((translatedLang) => {
+                translateText( response.data.result.sports[i].desc, id )
+                .then((translatedLang) => {
                     resultArray.push(translatedLang)
                     if (resultArray.length == response.data.result.sports.length) {
                         addToCache(id, JSON.stringify(resultArray) )

@@ -51,10 +51,4 @@ const cache = async (req, res, next) => {
     } 
 }
 
-// const sortSports = (dataArray) => {
-//     dataArray.sort((p1, p2) => (p1.pos < p2.pos) ? 1 : (p1.pos > p2.pos) ? -1 : 0); 
-// }
-
-
-
 module.exports = {BaseUrl, addToCache, cache, translateText}
