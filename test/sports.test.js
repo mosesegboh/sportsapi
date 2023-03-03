@@ -16,9 +16,9 @@ describe('sports and events API', () => {
         })
     }) 
 
-    it('GET `/api/events/${process.env.TEST_ID}` --> specific event', () => {
+    it('GET `/api/events/${process.env.TEST_ID}?` --> specific event', () => {
         return request(app)
-        .get(`/api/event/${process.env.TEST_EVENT_ID}`)
+        .get(`/api/events/${process.env.TEST_EVENT_ID}?`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)

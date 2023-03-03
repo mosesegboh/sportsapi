@@ -20,6 +20,7 @@ router.get("/:id",  cache, async (req, res) => {
             if (item.comp.length > 0) {
                 item.comp.forEach((newItem) => {
                     newItem.events.forEach((event)=>{
+                        console.log(event.id)
                         if (event.id == +id) {
                             idFound = true
                             addToCache(id, JSON.stringify(event))
