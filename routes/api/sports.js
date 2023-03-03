@@ -24,19 +24,22 @@ router.get("/", cache, async (req, res) => {
     axios(config)
     .then(function (response) {
         var resultArray = []
+        console.log(response.data.result.sports)
         for (let i = 0; i < response.data.result.sports.length; i++) {
-            setTimeout(() => {console.log('delayed for translation process!')}, 9000)
+            setTimeout(() => {
             translateText( response.data.result.sports[i].desc, id )
             .then((translatedLang) => {
-                resultArray.push(translatedLang)
-                if (i == response.data.result.sports.length - 1) {
-                    addToCache(id, JSON.stringify(resultArray) )
-                    return res.json({
-                        status: "SUCCESS",
-                        data: resultArray,
-                    })
-                }
-            }) 
+                    resultArray.push(translatedLang)
+                    if (resultArray.length == response.data.result.sports.length) {
+                        addToCache(id, JSON.stringify(resultArray) )
+                        console.log('here')
+                        return res.json({
+                            status: "SUCCESS",
+                            data: resultArray,
+                        })
+                    }
+                }) 
+            }, 2000)
         }  
     })
     .catch(function (error) {
