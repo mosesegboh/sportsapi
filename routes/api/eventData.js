@@ -1,19 +1,12 @@
 const express = require("express")
 const router = express.Router()
 var axios = require('axios')
-const {BaseUrl, addToCache, cache} = require("../../services")
+const {BaseUrl, addToCache, cache, config} = require("../../services")
 
 router.get("/:id", cache, async (req, res) => {
     const { id } = req.params;
 
     try {
-        const config = {
-            method: 'get',
-            url: `${BaseUrl}`,
-            headers: { 
-                'Content-Type': 'application/json'
-            }
-        };
 
         const response = await axios(config);
 

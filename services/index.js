@@ -54,4 +54,12 @@ const preserveIndex = (order, resultArray) => {
     return newArray
 }
 
-module.exports = {BaseUrl, addToCache, cache, translateText, preserveIndex}
+const config = {
+    method: 'get',
+    url: `${BaseUrl}`,
+    headers: { 
+        'Content-Type': 'application/json'
+    }
+}
+
+module.exports = {BaseUrl, addToCache, cache, translateText, preserveIndex, config}
