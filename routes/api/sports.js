@@ -1,17 +1,13 @@
 const express = require("express")
 const router = express.Router()
-const {BaseUrl, translateText, addToCache, cache} = require("../../services")
+const {BaseUrl, translateText, addToCache, cache, preserveIndex} = require("../../services")
+
 
 router.get("/", cache, async (req, res) => {
     var id = req.query.lang ? req.query.lang : 'en'
     suportedLanguages = ['zh-CN', 'de', 'en']
-    if (!suportedLanguages.includes(id)){
-        return res.json({
-            status: "FAILED",
-            msg: "Language Not supported",
-        })
-    }
-
+    if (!suportedLanguages.includes(id)) return res.json({status: "FAILED", msg: "Language Not supported"})
+    
     var axios = require('axios');
     var config = {
       method: 'get',
@@ -24,20 +20,20 @@ router.get("/", cache, async (req, res) => {
     axios(config)
     .then(function (response) {
         var resultArray = []
+        var order = []
         for (let i = 0; i < response.data.result.sports.length; i++) {
-            setTimeout(() => {
-                translateText( response.data.result.sports[i].desc, id )
-                .then((translatedLang) => {
-                    resultArray.push(translatedLang)
-                    if (resultArray.length == response.data.result.sports.length) {
-                        addToCache(id, JSON.stringify(resultArray) )
-                        return res.json({
-                            status: "SUCCESS",
-                            data: resultArray,
-                        })
-                    }
-                }) 
-            }, 2000)
+            order.push(response.data.result.sports[i].desc)
+            translateText( response.data.result.sports[i].desc, id )
+            .then((translatedLang) => {
+                resultArray.push(translatedLang)
+                if (resultArray.length == response.data.result.sports.length) {
+                    addToCache(id, JSON.stringify(preserveIndex(order, resultArray)) )
+                    return res.json({
+                        status: "SUCCESS",
+                        data: preserveIndex(order, resultArray),
+                    })
+                }
+            }) 
         }  
     })
     .catch(function (error) {

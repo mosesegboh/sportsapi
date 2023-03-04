@@ -6,8 +6,8 @@ const REDIS_PORT = process.env.PORT || 6379
 const client = redis.createClient(REDIS_PORT)
 client.connect()
 
-const {Translate} = require('@google-cloud/translate').v2;
-const CREDENTIALS = JSON.parse(process.env.CREDENTIALS);
+const {Translate} = require('@google-cloud/translate').v2
+const CREDENTIALS = JSON.parse(process.env.CREDENTIALS)
 const translate = new Translate({
     credentials: CREDENTIALS,
     projectId: CREDENTIALS.project_id
@@ -15,11 +15,11 @@ const translate = new Translate({
 
 const translateText = async (text, targetLanguage) => {
     try {
-        let [response] = await translate.translate(text, targetLanguage);
-        return response;
+        let [response] = await translate.translate(text, targetLanguage)
+        return response
     } catch (error) {
-        console.log(`Error at translateText --> ${error}`);
-        return 0;
+        console.log(`Error at translateText --> ${error}`)
+        return 0
     }
 };
 
@@ -34,14 +34,10 @@ const cache = async (req, res, next) => {
     
     try {
         const  data = await client.get(id)
-        if (data !== null){
-            return res.json({
-                status: "SUCCESS", 
-                data: JSON.parse(data),
-            })
-        }else{
+        if (data !== null)
+            return res.json({status: "SUCCESS", data: JSON.parse(data)})
+        else
             next()
-        }
     } catch (error) {
         console.log(error.message)
         return res.json({
@@ -51,4 +47,12 @@ const cache = async (req, res, next) => {
     } 
 }
 
-module.exports = {BaseUrl, addToCache, cache, translateText}
+const preserveIndex = (order, resultArray) => {
+    var newArray = []
+    for (var i = 0; i < order.length; i++) {
+        newArray.push(resultArray[resultArray.indexOf(order[i])])
+    }
+    return newArray
+}
+
+module.exports = {BaseUrl, addToCache, cache, translateText, preserveIndex}
