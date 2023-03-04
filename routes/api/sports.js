@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const { BaseUrl, translateText, addToCache, cache, preserveIndex, config } = require("../../services")
+const { translateText, addToCache, cache, preserveIndex, config } = require("../../services")
 const axios = require('axios')
 
 const supportedLanguages = ['zh-CN', 'de', 'en']

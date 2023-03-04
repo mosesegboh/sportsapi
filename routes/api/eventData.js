@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 var axios = require('axios')
-const {BaseUrl, addToCache, cache, config} = require("../../services")
+const {addToCache, cache, config} = require("../../services")
 
 router.get("/:id", cache, async (req, res) => {
     const { id } = req.params;
