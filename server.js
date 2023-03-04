@@ -1,7 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
 const dotenv = require('dotenv')
-const {cache} = require("./services")
 const sportsRouter = require("./routes/api/sports")
 const eventsRouter = require("./routes/api/events")
 const eventsDataRouter = require("./routes/api/eventData")

@@ -48,7 +48,6 @@ router.get("/:id?", cache, async (req, res) => {
             message: "An error Occured",
         })
     });
-    
 });
 
 module.exports = router;
